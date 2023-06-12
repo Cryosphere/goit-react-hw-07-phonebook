@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { addContact } from 'redux/slice';
+import { addContact } from 'redux/operations';
 import { useSelector, useDispatch } from 'react-redux';
 
 import style from './ContactForm.module.css';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(state => state.contacts.items);
   const dispatch = useDispatch();
 
   const handleName = e => {
@@ -19,7 +19,7 @@ export const ContactForm = () => {
 
   const handleNumber = e => {
     const { value } = e.target;
-    setNumber(value);
+    setPhone(value);
   };
 
   const handleSubmit = e => {
@@ -35,11 +35,11 @@ export const ContactForm = () => {
       return;
     }
 
-    const newContact = { id: nanoid(), name, number };
+    const newContact = { id: nanoid(), name, phone };
     dispatch(addContact(newContact));
 
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   const nameId = nanoid();
@@ -64,8 +64,8 @@ export const ContactForm = () => {
         className={style.input}
         id={numberId}
         type="tel"
-        name="number"
-        value={number}
+        name="phone"
+        value={phone}
         onChange={handleNumber}
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
